@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.1.2 (Python 3.7.3 on win32)" generated="20190709 13:30:46.364" rpa="false">
+<suite id="s1" name="PyRobotTesting" source="C:\Users\Konstantin\PycharmProjects\PyRobotTesting\PyRobotTesting.robot">
+<test id="s1-t1" name="MyTestCase">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 1</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.851" level="INFO">Step 1</msg>
+<status status="PASS" starttime="20190709 13:30:46.850" endtime="20190709 13:30:46.851"></status>
+</kw>
+<kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using the map string `db_custom_param_string`.</doc>
+<arguments>
+<arg>sqlite3</arg>
+<arg>database='C:/Users/Konstantin/PyRobotApp/testing-master/web/clients.db', isolation_level=None</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.861" level="INFO">Executing : Connect To Database Using Custom Params : sqlite3.connect(db_api_2.connect(database='C:/Users/Konstantin/PyRobotApp/testing-master/web/clients.db', isolation_level=None)) </msg>
+<status status="PASS" starttime="20190709 13:30:46.852" endtime="20190709 13:30:46.862"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 2</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.864" level="INFO">Step 2</msg>
+<status status="PASS" starttime="20190709 13:30:46.863" endtime="20190709 13:30:46.864"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT CLIENTS.CLIENT_ID FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>@{client_id_with_positive_balance}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.866" level="INFO">Executing : Query  |  SELECT CLIENTS.CLIENT_ID FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.868" level="INFO">@{client_id_with_positive_balance} = [ ]</msg>
+<status status="PASS" starttime="20190709 13:30:46.865" endtime="20190709 13:30:46.868"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>@{client_id_with_positive_balance}==[]</arg>
+<arg>Add_rich_client</arg>
+</arguments>
+<kw name="Add_rich_client">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>There was no client with positive balance in DB, adding new one</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.871" level="INFO">There was no client with positive balance in DB, adding new one</msg>
+<status status="PASS" starttime="20190709 13:30:46.871" endtime="20190709 13:30:46.871"></status>
+</kw>
+<kw name="Get_new_client_id">
+<assign>
+<var>${new_client_id}</var>
+</assign>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT CLIENT_ID FROM CLIENTS ORDER BY CLIENT_ID DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.872" level="INFO">Executing : Query  |  SELECT CLIENT_ID FROM CLIENTS ORDER BY CLIENT_ID DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.873" level="INFO">${client_id_max_number} = [(3,)]</msg>
+<status status="PASS" starttime="20190709 13:30:46.872" endtime="20190709 13:30:46.873"></status>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<doc>Sets variable based on the given condition.</doc>
+<arguments>
+<arg>@{client_id_max_number}==[]</arg>
+<arg>1</arg>
+<arg>${client_id_max_number[0][0]}</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number_clean}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.875" level="INFO">${client_id_max_number_clean} = 3</msg>
+<status status="PASS" starttime="20190709 13:30:46.873" endtime="20190709 13:30:46.875"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${client_id_max_number_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.875" level="INFO">3</msg>
+<status status="PASS" starttime="20190709 13:30:46.875" endtime="20190709 13:30:46.876"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT CLIENTS_CLIENT_ID FROM BALANCES ORDER BY CLIENTS_CLIENT_ID DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number_balance}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.876" level="INFO">Executing : Query  |  SELECT CLIENTS_CLIENT_ID FROM BALANCES ORDER BY CLIENTS_CLIENT_ID DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.877" level="INFO">${client_id_max_number_balance} = [(3,)]</msg>
+<status status="PASS" starttime="20190709 13:30:46.876" endtime="20190709 13:30:46.877"></status>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<doc>Sets variable based on the given condition.</doc>
+<arguments>
+<arg>@{client_id_max_number_balance}==[]</arg>
+<arg>1</arg>
+<arg>${client_id_max_number_balance[0][0]}</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number_balance_clean}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.878" level="INFO">${client_id_max_number_balance_clean} = 3</msg>
+<status status="PASS" starttime="20190709 13:30:46.877" endtime="20190709 13:30:46.878"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${client_id_max_number_balance_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.879" level="INFO">3</msg>
+<status status="PASS" starttime="20190709 13:30:46.879" endtime="20190709 13:30:46.879"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT CLIENTS_CLIENT_ID FROM CLIENT_SERVICE ORDER BY CLIENTS_CLIENT_ID DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number_service}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.879" level="INFO">Executing : Query  |  SELECT CLIENTS_CLIENT_ID FROM CLIENT_SERVICE ORDER BY CLIENTS_CLIENT_ID DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.880" level="INFO">${client_id_max_number_service} = [(3,)]</msg>
+<status status="PASS" starttime="20190709 13:30:46.879" endtime="20190709 13:30:46.880"></status>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<doc>Sets variable based on the given condition.</doc>
+<arguments>
+<arg>@{client_id_max_number_service}==[]</arg>
+<arg>1</arg>
+<arg>${client_id_max_number_service[0][0]}</arg>
+</arguments>
+<assign>
+<var>${client_id_max_number_service_clean}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.881" level="INFO">${client_id_max_number_service_clean} = 3</msg>
+<status status="PASS" starttime="20190709 13:30:46.880" endtime="20190709 13:30:46.881"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${client_id_max_number_service_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.882" level="INFO">3</msg>
+<status status="PASS" starttime="20190709 13:30:46.882" endtime="20190709 13:30:46.884"></status>
+</kw>
+<kw name="Largest" library="MyKeywords">
+<arguments>
+<arg>${client_id_max_number_clean}</arg>
+<arg>${client_id_max_number_balance_clean}</arg>
+<arg>${client_id_max_number_service_clean}</arg>
+</arguments>
+<assign>
+<var>${largest_id}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.885" level="INFO">${largest_id} = 3</msg>
+<status status="PASS" starttime="20190709 13:30:46.884" endtime="20190709 13:30:46.885"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>${largest_id} + 1</arg>
+</arguments>
+<assign>
+<var>${probable_new_client_id}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.886" level="INFO">${probable_new_client_id} = 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.885" endtime="20190709 13:30:46.886"></status>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<doc>Sets variable based on the given condition.</doc>
+<arguments>
+<arg>(${client_id_max_number_clean}==1)and(${client_id_max_number_balance_clean}==1)and(${client_id_max_number_service_clean}==1)</arg>
+<arg>1</arg>
+<arg>${probable_new_client_id}</arg>
+</arguments>
+<assign>
+<var>${new_client_id}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.887" level="INFO">${new_client_id} = 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.886" endtime="20190709 13:30:46.887"></status>
+</kw>
+<msg timestamp="20190709 13:30:46.888" level="INFO">${new_client_id} = 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.871" endtime="20190709 13:30:46.888"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>INSERT INTO CLIENTS (CLIENT_ID, CLIENT_NAME) VALUES (${new_client_id}, "Tony Stark");</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.889" level="INFO">Executing : Query  |  INSERT INTO CLIENTS (CLIENT_ID, CLIENT_NAME) VALUES (4, "Tony Stark"); </msg>
+<status status="PASS" starttime="20190709 13:30:46.888" endtime="20190709 13:30:46.905"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>INSERT INTO BALANCES (CLIENTS_CLIENT_ID, BALANCE) VALUES (${new_client_id}, 5.00);</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.909" level="INFO">Executing : Query  |  INSERT INTO BALANCES (CLIENTS_CLIENT_ID, BALANCE) VALUES (4, 5.00); </msg>
+<status status="PASS" starttime="20190709 13:30:46.907" endtime="20190709 13:30:46.924"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>client with positive balance was added, client id is: ${new_client_id}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.925" level="INFO">client with positive balance was added, client id is: 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.924" endtime="20190709 13:30:46.925"></status>
+</kw>
+<status status="PASS" starttime="20190709 13:30:46.870" endtime="20190709 13:30:46.925"></status>
+</kw>
+<status status="PASS" starttime="20190709 13:30:46.869" endtime="20190709 13:30:46.925"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT CLIENTS.CLIENT_ID FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>${client_id_with_positive_balance}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.926" level="INFO">Executing : Query  |  SELECT CLIENTS.CLIENT_ID FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.927" level="INFO">${client_id_with_positive_balance} = [(4,)]</msg>
+<status status="PASS" starttime="20190709 13:30:46.926" endtime="20190709 13:30:46.927"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT BALANCES.BALANCE FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1;</arg>
+</arguments>
+<assign>
+<var>${initial_client_balance}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.929" level="INFO">Executing : Query  |  SELECT BALANCES.BALANCE FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE BALANCES.BALANCE&gt;0 ORDER BY BALANCES.BALANCE DESC LIMIT 1; </msg>
+<msg timestamp="20190709 13:30:46.930" level="INFO">${initial_client_balance} = [(5.0,)]</msg>
+<status status="PASS" starttime="20190709 13:30:46.928" endtime="20190709 13:30:46.930"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${client_id_with_positive_balance[0][0]}</arg>
+</arguments>
+<assign>
+<var>${client_id_with_positive_balance_clean}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.932" level="INFO">${client_id_with_positive_balance_clean} = 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.931" endtime="20190709 13:30:46.932"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${initial_client_balance[0][0]}</arg>
+</arguments>
+<assign>
+<var>${initial_client_balance_clean}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.935" level="INFO">${initial_client_balance_clean} = 5.0</msg>
+<status status="PASS" starttime="20190709 13:30:46.934" endtime="20190709 13:30:46.935"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>initial client balance is: ${initial_client_balance_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.938" level="INFO">initial client balance is: 5.0</msg>
+<status status="PASS" starttime="20190709 13:30:46.937" endtime="20190709 13:30:46.939"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>client id is: ${client_id_with_positive_balance_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.940" level="INFO">client id is: 4</msg>
+<status status="PASS" starttime="20190709 13:30:46.940" endtime="20190709 13:30:46.940"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 3</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.942" level="INFO">Step 3</msg>
+<status status="PASS" starttime="20190709 13:30:46.941" endtime="20190709 13:30:46.942"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>local_session</arg>
+<arg>${Base_URL}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:46.944" level="INFO">Creating Session using : alias=local_session, url=http://localhost:5000, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190709 13:30:46.943" endtime="20190709 13:30:46.944"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>client_id=${client_id_with_positive_balance_clean}</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.947" level="INFO">${body} = {'client_id': 4}</msg>
+<status status="PASS" starttime="20190709 13:30:46.945" endtime="20190709 13:30:46.947"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+</arguments>
+<assign>
+<var>${header}</var>
+</assign>
+<msg timestamp="20190709 13:30:46.949" level="INFO">${header} = {'Content-Type': 'application/json'}</msg>
+<status status="PASS" starttime="20190709 13:30:46.948" endtime="20190709 13:30:46.949"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>local_session</arg>
+<arg>/client/services</arg>
+<arg>data=${body}</arg>
+<arg>headers=${header}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20190709 13:30:49.017" level="INFO">Post Request using : alias=local_session, uri=/client/services, data={"client_id": 4}, headers={'Content-Type': 'application/json'}, files=None, allow_redirects=True </msg>
+<msg timestamp="20190709 13:30:49.017" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:46.950" endtime="20190709 13:30:49.017"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<arg>Server sent incorrect status code</arg>
+</arguments>
+<msg timestamp="20190709 13:30:49.019" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:49.018" endtime="20190709 13:30:49.019"></status>
+</kw>
+<kw name="Get_list_of_services_from_json">
+<arguments>
+<arg>${response.content}</arg>
+</arguments>
+<assign>
+<var>${list_of_services_added_to_client}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads("""${source_data}""")</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${source_data}</var>
+</assign>
+<msg timestamp="20190709 13:30:49.023" level="INFO">${source_data} = {'count': 0, 'items': []}</msg>
+<status status="PASS" starttime="20190709 13:30:49.022" endtime="20190709 13:30:49.023"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${source_data['items']}</arg>
+</arguments>
+<assign>
+<var>${all_items}</var>
+</assign>
+<msg timestamp="20190709 13:30:49.024" level="INFO">${all_items} = []</msg>
+<status status="PASS" starttime="20190709 13:30:49.023" endtime="20190709 13:30:49.024"></status>
+</kw>
+<msg timestamp="20190709 13:30:49.024" level="INFO">${list_of_services_added_to_client} = []</msg>
+<status status="PASS" starttime="20190709 13:30:49.021" endtime="20190709 13:30:49.024"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 4</arg>
+</arguments>
+<msg timestamp="20190709 13:30:49.025" level="INFO">Step 4</msg>
+<status status="PASS" starttime="20190709 13:30:49.025" endtime="20190709 13:30:49.026"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>local_session</arg>
+<arg>/services</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.051" level="INFO">Get Request using : alias=local_session, uri=/services, headers=None json=None</msg>
+<msg timestamp="20190709 13:30:51.052" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:49.027" endtime="20190709 13:30:51.052"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<arg>Server sent incorrect status code</arg>
+</arguments>
+<msg timestamp="20190709 13:30:51.054" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:51.053" endtime="20190709 13:30:51.055"></status>
+</kw>
+<kw name="Get_list_of_services_from_json">
+<arguments>
+<arg>${response.content}</arg>
+</arguments>
+<assign>
+<var>${list_of_all_serives}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.loads("""${source_data}""")</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${source_data}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.058" level="INFO">${source_data} = {'count': 5, 'items': [{'cost': 1.2, 'id': 1, 'name': 'Service #1'}, {'cost': 0.35, 'id': 2, 'name': 'Service #2'}, {'cost': 0.15, 'id': 3, 'name': 'Service #3'}, {'cost': 0.15, 'id': 4, 'name': 'Serv...</msg>
+<status status="PASS" starttime="20190709 13:30:51.057" endtime="20190709 13:30:51.058"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${source_data['items']}</arg>
+</arguments>
+<assign>
+<var>${all_items}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.059" level="INFO">${all_items} = [{'cost': 1.2, 'id': 1, 'name': 'Service #1'}, {'cost': 0.35, 'id': 2, 'name': 'Service #2'}, {'cost': 0.15, 'id': 3, 'name': 'Service #3'}, {'cost': 0.15, 'id': 4, 'name': 'Service #4'}, {'cost': 0.0...</msg>
+<status status="PASS" starttime="20190709 13:30:51.058" endtime="20190709 13:30:51.059"></status>
+</kw>
+<msg timestamp="20190709 13:30:51.060" level="INFO">${list_of_all_serives} = [{'cost': 1.2, 'id': 1, 'name': 'Service #1'}, {'cost': 0.35, 'id': 2, 'name': 'Service #2'}, {'cost': 0.15, 'id': 3, 'name': 'Service #3'}, {'cost': 0.15, 'id': 4, 'name': 'Service #4'}, {'cost': 0.0...</msg>
+<status status="PASS" starttime="20190709 13:30:51.056" endtime="20190709 13:30:51.060"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 5</arg>
+</arguments>
+<msg timestamp="20190709 13:30:51.062" level="INFO">Step 5</msg>
+<status status="PASS" starttime="20190709 13:30:51.061" endtime="20190709 13:30:51.062"></status>
+</kw>
+<kw name="Get_unadded_service">
+<arguments>
+<arg>${list_of_all_serives}</arg>
+<arg>${list_of_services_added_to_client}</arg>
+</arguments>
+<assign>
+<var>${unadded_service_id}</var>
+<var>${unadded_service_cost}</var>
+</assign>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${list_of_all_services}</arg>
+</arguments>
+<assign>
+<var>${list_of_all_services}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.064" level="INFO">${list_of_all_services} = [{'cost': 1.2, 'id': 1, 'name': 'Service #1'}, {'cost': 0.35, 'id': 2, 'name': 'Service #2'}, {'cost': 0.15, 'id': 3, 'name': 'Service #3'}, {'cost': 0.15, 'id': 4, 'name': 'Service #4'}, {'cost': 0.0...</msg>
+<status status="PASS" starttime="20190709 13:30:51.064" endtime="20190709 13:30:51.065"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${list_of_services_added_to_client}</arg>
+</arguments>
+<assign>
+<var>${list_of_services_added_to_client}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.065" level="INFO">${list_of_services_added_to_client} = []</msg>
+<status status="PASS" starttime="20190709 13:30:51.065" endtime="20190709 13:30:51.066"></status>
+</kw>
+<kw name="Get Unadded Service Id" library="MyKeywords">
+<arguments>
+<arg>${list_of_all_services}</arg>
+<arg>${list_of_services_added_to_client}</arg>
+</arguments>
+<assign>
+<var>${unadded_service_id}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.066" level="INFO">${unadded_service_id} = 1</msg>
+<status status="PASS" starttime="20190709 13:30:51.066" endtime="20190709 13:30:51.067"></status>
+</kw>
+<kw name="Get Unadded Service Cost" library="MyKeywords">
+<arguments>
+<arg>${unadded_service_id}</arg>
+<arg>${list_of_all_services}</arg>
+</arguments>
+<assign>
+<var>${unadded_service_cost}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.067" level="INFO">${unadded_service_cost} = 1.2</msg>
+<status status="PASS" starttime="20190709 13:30:51.067" endtime="20190709 13:30:51.068"></status>
+</kw>
+<msg timestamp="20190709 13:30:51.068" level="INFO">${unadded_service_id} = 1</msg>
+<msg timestamp="20190709 13:30:51.068" level="INFO">${unadded_service_cost} = 1.2</msg>
+<status status="PASS" starttime="20190709 13:30:51.063" endtime="20190709 13:30:51.068"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>unadded service id is: ${unadded_service_id}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:51.070" level="INFO">unadded service id is: 1</msg>
+<status status="PASS" starttime="20190709 13:30:51.069" endtime="20190709 13:30:51.070"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>unadded service cost is: ${unadded_service_cost}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:51.072" level="INFO">unadded service cost is: 1.2</msg>
+<status status="PASS" starttime="20190709 13:30:51.071" endtime="20190709 13:30:51.072"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 6</arg>
+</arguments>
+<msg timestamp="20190709 13:30:51.073" level="INFO">Step 6</msg>
+<status status="PASS" starttime="20190709 13:30:51.073" endtime="20190709 13:30:51.073"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>client_id=${client_id_with_positive_balance_clean}</arg>
+<arg>service_id=${unadded_service_id}</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.075" level="INFO">${body} = {'client_id': 4, 'service_id': 1}</msg>
+<status status="PASS" starttime="20190709 13:30:51.074" endtime="20190709 13:30:51.075"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+</arguments>
+<assign>
+<var>${header}</var>
+</assign>
+<msg timestamp="20190709 13:30:51.077" level="INFO">${header} = {'Content-Type': 'application/json'}</msg>
+<status status="PASS" starttime="20190709 13:30:51.076" endtime="20190709 13:30:51.077"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>local_session</arg>
+<arg>/client/add_service</arg>
+<arg>data=${body}</arg>
+<arg>headers=${header}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20190709 13:30:53.115" level="INFO">Post Request using : alias=local_session, uri=/client/add_service, data={"client_id": 4, "service_id": 1}, headers={'Content-Type': 'application/json'}, files=None, allow_redirects=True </msg>
+<msg timestamp="20190709 13:30:53.115" level="INFO">${response} = &lt;Response [202]&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:51.078" endtime="20190709 13:30:53.116"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${response.content}</arg>
+</arguments>
+<msg timestamp="20190709 13:30:53.117" level="INFO">Processing</msg>
+<status status="PASS" starttime="20190709 13:30:53.117" endtime="20190709 13:30:53.117"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+<arg>202</arg>
+<arg>Server sent incorrect status code</arg>
+</arguments>
+<msg timestamp="20190709 13:30:53.118" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20190709 13:30:53.117" endtime="20190709 13:30:53.119"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 7</arg>
+</arguments>
+<msg timestamp="20190709 13:30:53.120" level="INFO">Step 7</msg>
+<status status="PASS" starttime="20190709 13:30:53.119" endtime="20190709 13:30:53.120"></status>
+</kw>
+<kw name="Check_if_service_was_added">
+<arguments>
+<arg>${client_id_with_positive_balance_clean}</arg>
+<arg>${unadded_service_id}</arg>
+</arguments>
+<assign>
+<var>${success}</var>
+</assign>
+<kw name="Check Service Added" library="MyKeywords">
+<arguments>
+<arg>${client_id_with_positive_balance_clean}</arg>
+<arg>${unadded_service_id}</arg>
+</arguments>
+<assign>
+<var>${success}</var>
+</assign>
+<msg timestamp="20190709 13:31:07.410" level="INFO">${success} = OK</msg>
+<status status="PASS" starttime="20190709 13:30:53.124" endtime="20190709 13:31:07.410"></status>
+</kw>
+<msg timestamp="20190709 13:31:07.410" level="INFO">${success} = OK</msg>
+<timeout value="1 minute"></timeout>
+<status status="PASS" starttime="20190709 13:30:53.122" endtime="20190709 13:31:07.410"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${success}</arg>
+<arg>OK</arg>
+<arg>Service was not added to the client</arg>
+</arguments>
+<status status="PASS" starttime="20190709 13:31:07.411" endtime="20190709 13:31:07.412"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 8</arg>
+</arguments>
+<msg timestamp="20190709 13:31:07.413" level="INFO">Step 8</msg>
+<status status="PASS" starttime="20190709 13:31:07.413" endtime="20190709 13:31:07.414"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT BALANCES.BALANCE FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE CLIENTS.CLIENT_ID=${client_id_with_positive_balance_clean};</arg>
+</arguments>
+<assign>
+<var>${end_client_balance}</var>
+</assign>
+<msg timestamp="20190709 13:31:07.415" level="INFO">Executing : Query  |  SELECT BALANCES.BALANCE FROM CLIENTS JOIN BALANCES ON CLIENTS.CLIENT_ID=BALANCES.CLIENTS_CLIENT_ID WHERE CLIENTS.CLIENT_ID=4; </msg>
+<msg timestamp="20190709 13:31:07.416" level="INFO">${end_client_balance} = [(3.8,)]</msg>
+<status status="PASS" starttime="20190709 13:31:07.414" endtime="20190709 13:31:07.416"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>${end_client_balance[0][0]}</arg>
+</arguments>
+<assign>
+<var>${end_client_balance_clean}</var>
+</assign>
+<msg timestamp="20190709 13:31:07.418" level="INFO">${end_client_balance_clean} = 3.8</msg>
+<status status="PASS" starttime="20190709 13:31:07.417" endtime="20190709 13:31:07.418"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>end balance of the client is: ${end_client_balance_clean}</arg>
+</arguments>
+<msg timestamp="20190709 13:31:07.420" level="INFO">end balance of the client is: 3.8</msg>
+<status status="PASS" starttime="20190709 13:31:07.419" endtime="20190709 13:31:07.420"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Step 9</arg>
+</arguments>
+<msg timestamp="20190709 13:31:07.422" level="INFO">Step 9</msg>
+<status status="PASS" starttime="20190709 13:31:07.421" endtime="20190709 13:31:07.422"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>${initial_client_balance_clean} - ${unadded_service_cost}</arg>
+</arguments>
+<assign>
+<var>${changed_client_balance}</var>
+</assign>
+<msg timestamp="20190709 13:31:07.424" level="INFO">${changed_client_balance} = 3.8</msg>
+<status status="PASS" starttime="20190709 13:31:07.423" endtime="20190709 13:31:07.424"></status>
+</kw>
+<kw name="Should Be Equal As Numbers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<arguments>
+<arg>${end_client_balance_clean}</arg>
+<arg>${changed_client_balance}</arg>
+<arg>End client balance is not equal to difference of initial balance and service cost</arg>
+</arguments>
+<status status="PASS" starttime="20190709 13:31:07.425" endtime="20190709 13:31:07.426"></status>
+</kw>
+<status status="PASS" starttime="20190709 13:30:46.849" endtime="20190709 13:31:07.427" critical="yes"></status>
+</test>
+<status status="PASS" starttime="20190709 13:30:46.368" endtime="20190709 13:31:07.431"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="PyRobotTesting">PyRobotTesting</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
